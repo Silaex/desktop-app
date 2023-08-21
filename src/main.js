@@ -217,11 +217,12 @@ function AddEntityToManager(_EntityManager, _Entity)
 class Sprite 
 {
   /**
-   * @param {Image} Image 
+   * @param {String} ImageUrl
    */
-  constructor(_Image)
+  constructor(ImageUrl)
   {
-    this.Image = _Image;
+	
+    this.Image = new Image();
   }
 }
 
@@ -243,16 +244,21 @@ function draw()
   console.log(MapCellWidthRatio);
   let Rect = null;
   for (let i = 0; i < _Map.length; i++) {
-    ctx.lineWidth = 5;
-    StrokeRect(
-      (i%32)*MapCellWidthRatio, 
-      parseInt(i/32)*MapCellHeightRatio, 
-      MapCellWidthRatio, 
-      MapCellHeightRatio,
-      COLORS.Green
-    );
+    // ctx.lineWidth = 5;
+    // StrokeRect(
+    //   (i%32)*MapCellWidthRatio, 
+    //   parseInt(i/32)*MapCellHeightRatio, 
+    //   MapCellWidthRatio, 
+    //   MapCellHeightRatio,
+    //   COLORS.Green
+    // );
+	//const SP = new Sprite("./assets/alexandre.png");
   }
 
+  const Img = new Image();
+	Img.src = "./assets/tauri.svg";
+	ctx.drawImage(Img, 0, 0, Img.width, Img.height);
+  Log(Img);
   //ctx.clearRect();
 
   //FilledRect(10, 10, 150, 100, COLORS.Blue);
