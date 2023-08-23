@@ -157,7 +157,6 @@ document.body.onresize = () => {
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
   MapCellWidthRatio = parseInt(ctx.canvas.width / 32);
   MapCellHeightRatio = parseInt(ctx.canvas.height / (32 * HDResolution));
-  draw();
 }
 
 // imageObj.onload = function() {
@@ -177,55 +176,6 @@ for (let y = 0; y < YCellsAmount; y++) {
   }
 }
 
-console.log(_Map);
-
-class EntityManager 
-{
-  constructor()
-  {
-    this.Entities = {};
-  }
-}
-
-class Entity
-{
-  /**
-   * @param {String} Name 
-   * @param {Sprite} _Sprite 
-   */
-  constructor(Name, _Sprite)
-  {
-    this.Name = TypeOfInit("String", Name);
-    this.Sprite = InstanceOfInit(Sprite, _Sprite);
-    this.Coords = {X:0, Y:0};
-  }
-}
-
-/**
- * @param {EntityManager} _EntityManager 
- * @param {Entity} _Entity 
- */
-function AddEntityToManager(_EntityManager, _Entity)
-{
-  if(InstanceOf(EntityManager, _EntityManager) && InstanceOf(Entity, _Entity))
-  {
-    _EntityManager.Entities[_EntityManager.Entities.length] = _Entity;
-  }
-  throw Error("[AddEntityToManager] Wrong Data");
-}
-
-class Sprite 
-{
-  /**
-   * @param {String} ImageUrl
-   */
-  constructor(ImageUrl)
-  {
-	
-    this.Image = new Image();
-  }
-}
-
 function StrokeRect(x, y, Width, Height, Color)
 {
   ctx.strokeStyle = Color;
@@ -239,29 +189,70 @@ function FilledRect(x, y, Width, Height, Color)
   ctx.fill();
 }
 
+// To count FPS
+let Time = new Date().getSeconds();
+let LastTime = Time;
+let Timer = 0;
+let FPS = 0;
+
+let XY = { X:ctx.canvas.width / 2-7, Y:ctx.canvas.height/2-7};
+let YPulse = 5;
+
 function draw()
 {
-  console.log(MapCellWidthRatio);
+	ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+	Time = new Date().getSeconds();
+	
+	if(LastTime - Time)
+	{
+		FPS = Timer+1;
+		Log("FPS :", FPS);
+		Timer = 0;
+	}
+	else
+	{
+		++Timer;
+	}
+	
+	ctx.smoothFont = true;
+	ctx.font = "48px consolas"
+	ctx.fillText(FPS + " fps", 0, 48);
+	
   let Rect = null;
   for (let i = 0; i < _Map.length; i++) {
-    // ctx.lineWidth = 5;
+		// ctx.lineWidth = 5;
     // StrokeRect(
-    //   (i%32)*MapCellWidthRatio, 
-    //   parseInt(i/32)*MapCellHeightRatio, 
-    //   MapCellWidthRatio, 
-    //   MapCellHeightRatio,
-    //   COLORS.Green
-    // );
-	//const SP = new Sprite("./assets/alexandre.png");
-  }
+			//   (i%32)*MapCellWidthRatio, 
+			//   parseInt(i/32)*MapCellHeightRatio, 
+			//   MapCellWidthRatio, 
+			//   MapCellHeightRatio,
+			//   COLORS.Green
+			// );
+			//const SP = new Sprite("./assets/alexandre.png");
+		}
+		
+		
+		//ctx.clearRect();
+		
+		//FilledRect(10, 10, 150, 100, COLORS.Blue);
+		ctx.beginPath();
+		ctx.ellipse(XY.X, XY.Y, 15, 15, Math.PI / 180, 0, 2 * Math.PI, false);
+		ctx.strokeStyle = "blue";
+		ctx.strokeWeight = "5px";
+		ctx.fill();
+		ctx.closePath();
 
-  const Img = new Image();
-	Img.src = "./assets/tauri.svg";
-	ctx.drawImage(Img, 0, 0, Img.width, Img.height);
-  Log(Img);
-  //ctx.clearRect();
+		XY.Y += YPulse;
+		if (XY.Y > ctx.canvas.height - 15 || XY.Y < 15)
+		{
+			YPulse = -YPulse;
+		}
+		
+		
+		LastTime = Time;
+		requestAnimationFrame(draw);
+	}
+	
 
-  //FilledRect(10, 10, 150, 100, COLORS.Blue);
-}
 
 draw();
