@@ -1,7 +1,3 @@
-# Tauri + Vanilla
+# Trucs a regarder si un jour je regarde ce fichier
 
-This template should help get you started developing with Tauri in vanilla HTML, CSS and Javascript.
-
-## Recommended IDE Setup
-
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+La balle ne revenait pas si on diminue la fenetre et que la balle est hors champ.
