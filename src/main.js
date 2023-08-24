@@ -198,6 +198,69 @@ let FPS = 0;
 let XY = { X:ctx.canvas.width / 2-7, Y:ctx.canvas.height/2-7};
 let YPulse = 5;
 
+class Rectangle
+{
+  constructor(Filled=false, X=0, Y=0, Width=0, Height=0, Color=COLORS.Black)
+  {
+    this.Filled = Filled;
+    this.X = TypeOfInit("Number", X); 
+    this.Y = TypeOfInit("Number", Y);
+    this.Width = TypeOfInit("Number", Width);
+    this.Height = TypeOfInit("Number", Height);
+    this.Color = TypeOfInit("String", Color);
+  }
+
+  Show()
+  {
+    if(this.Filled)
+    {
+      ctx.fillStyle = this.Color;
+      ctx.fillRect(this.X, this.Y, this.Width, this.Height);
+      ctx.fill();
+      return;
+    }
+    ctx.strokeStyle = this.Color;
+    ctx.strokeRect(this.X, this.Y, this.Width, this.Height);
+    ctx.stroke();
+  }
+}
+
+class Tank
+{
+  #Rotation = 0;
+  constructor(_Image)
+  {
+    this.Coords = {X:0, Y:0};
+    this._Image = _Image;
+  }
+
+  Update()
+  {
+    if(this._Image)
+    {
+      if(InstanceOf(Image, this._Image))
+      {
+        ctx.drawImage(this._Image);
+        return;
+      }
+    }
+  }
+
+  get Rotation() { return this.#Rotation; }
+  set Rotation(Deg)
+  {
+    this.#Rotation = Deg;
+  }
+}
+
+function DegToRad(Degrees)
+{
+  return Degrees * Math.PI/180;
+}
+
+const Rect = new Rectangle(true, 50, 50, 50, 50);
+
+
 function draw()
 {
 	ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
@@ -218,7 +281,6 @@ function draw()
 	ctx.font = "48px consolas"
 	ctx.fillText(FPS + " fps", 0, 48);
 	
-  let Rect = null;
   for (let i = 0; i < _Map.length; i++) {
 		// ctx.lineWidth = 5;
     // StrokeRect(
@@ -247,7 +309,8 @@ function draw()
 		{
 			YPulse = -YPulse;
 		}
-		
+
+		Rect.Show();
 		
 		LastTime = Time;
 		requestAnimationFrame(draw);
